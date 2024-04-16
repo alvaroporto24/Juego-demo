@@ -1,5 +1,10 @@
 const canvas = document.querySelector('#game')
 const game = canvas.getContext('2d')
+const buttonUp = document.querySelector('#up');
+const buttonLeft = document.querySelector('#left');
+const buttonRight = document.querySelector('#right');
+const buttonDown = document.querySelector('#down');
+
 
 let canvasSize;
 let elementSize; 
@@ -56,4 +61,43 @@ function startGame() {
     //     game.fillText(emoji, elementSize * (col + 1), elementSize * (row + 1))    
     //     }
     // }
+}
+
+window.addEventListener('keydown', moveKey)
+buttonUp.addEventListener('click', moveUp);
+buttonLeft.addEventListener('click', moveLeft);
+buttonRight.addEventListener('click', moveRight);
+buttonDown.addEventListener('click', moveDown);
+
+function moveKey(event) {
+
+    switch (event.key) {
+        case 'ArrowUp':
+            moveUp()
+            break;
+        case 'ArrowLeft':
+            moveLeft()
+            break;
+        case 'ArrowRight':
+            moveRight()
+            break;
+        case 'ArrowDown':
+            moveDown()
+            break;
+        default:
+            break;
+    }
+    
+}
+function moveUp() {
+    
+}
+function moveLeft() {
+    
+}
+function moveRight() {
+    
+}
+function moveDown() {
+    
 }
