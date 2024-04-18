@@ -4,6 +4,9 @@ const buttonUp = document.querySelector('#up');
 const buttonLeft = document.querySelector('#left');
 const buttonRight = document.querySelector('#right');
 const buttonDown = document.querySelector('#down');
+const livesIndicator = document.querySelector('.livesIndicator')
+const timeIndicator = document.querySelector('.timeIndicator')
+
 
 const playerPosition = {
     x : undefined,
@@ -13,10 +16,15 @@ const giftPosition = {
     x : undefined,
     y : undefined,
 }
+let enemyPositions = [];
 
 let canvasSize;
 let elementSize; 
 let level = 0;
+let lives = 2;
+
+let timeStart = undefined;
+let timeInterval;
 
 window.addEventListener('load', setCanvasSize)
 window.addEventListener('resize', setCanvasSize)
@@ -43,10 +51,22 @@ function startGame() {
 
     // version 2
     const map = maps[level]
+    if (!map) {
+        gameWin();
+        return;
+    }
     const mapRows = map.trim().split('\n');
     const mapRowCols = mapRows.map(row => row.trim().split(''))
 
-    game.clearRect(0,0,canvasSize,canvasSize)
+    modifyLives();
+
+    if (!timeStart) {
+        timeIndicator.textContent = '0';
+    }
+
+    game.clearRect(0,0,canvasSize,canvasSize);
+    enemyPositions = [];
+
     mapRowCols.forEach((row, rowIndex) => {
         row.forEach((col, colIndex) => {
             const emoji = emojis[col]
@@ -63,6 +83,12 @@ function startGame() {
                 case 'I':
                     giftPosition.x = posX;
                     giftPosition.y = posY
+                    break;
+                case 'X':
+                    enemyPositions.push({
+                        x: posX,
+                        y: posY,
+                    })
                 default:
                     break;
             }
@@ -85,27 +111,75 @@ function startGame() {
 }
 
 function movePlayer() {
-    playerColision()
-    game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y) 
+    playerCollision()
+    game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
 }
-
 function playerCollision() { 
-    const threshold = 0.1;
-
-    if (Math.abs(playerPosition.x - giftPosition.x) < threshold &&
-        Math.abs(playerPosition.y - giftPosition.y) < threshold) {
-        level++;
-        startGame();
+    //version 2
+    if (playerPosition.x.toFixed(1) == giftPosition.x.toFixed(1) && playerPosition.y.toFixed(1) == giftPosition.y.toFixed(1)) {
+        level ++;
+        startGame()
     }
+    const enemyCollision = enemyPositions.find(enemy => {
+            const enemyCollisionX = enemy.x.toFixed(3) == playerPosition.x.toFixed(3);
+            const enemyCollisionY = enemy.y.toFixed(3) == playerPosition.y.toFixed(3);
+            return enemyCollisionX && enemyCollisionY;
+    })
+
+    // version 1
+        //const threshold = 0.01;
+        // if (Math.abs(playerPosition.x - giftPosition.x) < threshold &&
+        //     Math.abs(playerPosition.y - giftPosition.y) < threshold) {
+        //     level++;
+        //     startGame();
+        // }
+        // const enemyCollision = enemyPositions.find(enemy => {
+        //     const enemyCollisionX = (enemy.x - playerPosition.x) < threshold;
+        //     const enemyCollisionY = (enemy.y - playerPosition.y) < threshold;
+        //     return enemyCollisionX && enemyCollisionY;
+        // })
+
+    if (enemyCollision) {
+        playerPosition.x = undefined;
+        playerPosition.y = undefined;
+        if (lives < 1){
+            gameOver();
+        }
+        lives--;
+        startGame()
+        }
+}
+function modifyLives() {
+    // Se cuentan las vidas y se añaden corazones a un array para luego mostrarlo
+    let j = [];
+    for (let i = 0; i < (lives + 1); i++) {
+        j.push('♥️');   
+    }  
+    livesIndicator.textContent = j.join(' ');
+}
+function showTime() {
+    // muestra el temporizador con el tiempo actual.
+    const playerTime = Date.now() - timeStart;
+    timeIndicator.textContent = playerTime;
 }
 
+function gameOver() {
+    level = 0;
+    lives = 3;
+    timeStart = undefined;
+    startGame();
+}
+function gameWin() {
+    console.log('has ganado')
+}
+// Movimientos con teclado y botones 
 window.addEventListener('keydown', moveKey)
 buttonUp.addEventListener('click', moveUp);
 buttonLeft.addEventListener('click', moveLeft);
 buttonRight.addEventListener('click', moveRight);
 buttonDown.addEventListener('click', moveDown);
 
-function moveKey(event) {
+function moveKey() {
     switch (event.key) {
         case 'ArrowUp':
             moveUp()
@@ -125,13 +199,19 @@ function moveKey(event) {
     
 }
 function moveUp() {
-    if (playerPosition.y - elementSize > elementSize) {  
+    // Comienzas a jugar e inicias el contador
+    if (!timeStart) {
+        timeStart = Date.now();
+        timeInterval = setInterval(showTime, 100);
+    }
+
+    if (playerPosition.y - elementSize > (elementSize / 2)) {  
         playerPosition.y -= elementSize;
         startGame();
     }
 }
 function moveLeft() {
-    if (playerPosition.x - elementSize > elementSize) {    
+    if (playerPosition.x - elementSize > (elementSize / 2)) {    
         playerPosition.x -= elementSize;
         startGame();
     }
