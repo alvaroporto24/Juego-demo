@@ -6,6 +6,8 @@ const buttonRight = document.querySelector('#right');
 const buttonDown = document.querySelector('#down');
 const livesIndicator = document.querySelector('.livesIndicator')
 const timeIndicator = document.querySelector('.timeIndicator')
+const recordIndicator = document.querySelector('.recordIndicator')
+const pResult = document.querySelector('#result')
 
 
 const playerPosition = {
@@ -62,6 +64,7 @@ function startGame() {
 
     if (!timeStart) {
         timeIndicator.textContent = '0';
+        showRecord()
     }
 
     game.clearRect(0,0,canvasSize,canvasSize);
@@ -162,6 +165,9 @@ function showTime() {
     const playerTime = Date.now() - timeStart;
     timeIndicator.textContent = playerTime;
 }
+function showRecord() {
+    recordIndicator.textContent = localStorage.getItem('record_time');
+}
 
 function gameOver() {
     level = 0;
@@ -171,6 +177,24 @@ function gameOver() {
 }
 function gameWin() {
     console.log('has ganado')
+    clearInterval(timeInterval)
+
+    const recordTime = localStorage.getItem('record_time');
+    const recordPlayer = Date.now() - timeStart;
+
+    if (recordTime) {
+        if(recordTime >= recordPlayer) {
+            localStorage.setItem('record_time', recordPlayer);
+            pResult.textContent = 'GENIAL !!! Has superado el record!!!';
+        } else{
+            pResult.textContent = 'FALLASTE !!! No has superado el record';
+        } 
+    } else{
+        pResult.textContent = 'Primera vez que superaste el juego. ¿Podras superar tu record?'
+        localStorage.setItem('record_time', recordPlayer)
+    }
+
+
 }
 // Movimientos con teclado y botones 
 window.addEventListener('keydown', moveKey)
