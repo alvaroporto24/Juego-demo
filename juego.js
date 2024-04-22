@@ -178,7 +178,7 @@ function gameOver() {
 function gameWin() {
     console.log('has ganado')
     clearInterval(timeInterval)
-
+// control de record para mostrarlo y superarlo.
     const recordTime = localStorage.getItem('record_time');
     const recordPlayer = Date.now() - timeStart;
 
@@ -193,8 +193,6 @@ function gameWin() {
         pResult.textContent = 'Primera vez que superaste el juego. ¿Podras superar tu record?'
         localStorage.setItem('record_time', recordPlayer)
     }
-
-
 }
 // Movimientos con teclado y botones 
 window.addEventListener('keydown', moveKey)
