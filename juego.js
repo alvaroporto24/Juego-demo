@@ -9,6 +9,27 @@ const timeIndicator = document.querySelector('.timeIndicator')
 const recordIndicator = document.querySelector('.recordIndicator')
 const pResult = document.querySelector('#result')
 
+const intro = document.querySelector('.intro');
+const buttonStart = document.querySelector('.start');
+
+buttonStart.addEventListener('click', hideIntro)
+
+const end = document.querySelector('.end');
+const buttonRestart = document.querySelector('.restart');
+
+const timeIndicator2 = document.querySelector('.timeIndicator2')
+const recordIndicator2 = document.querySelector('.recordIndicator2')
+const pResult2 = document.querySelector('#result2')
+
+buttonRestart.addEventListener('click', restart)
+
+function hideIntro() {
+    intro.classList.add('inactive')
+    startGame()
+}
+function restart() {
+    window.location.reload();
+}
 
 const playerPosition = {
     x : undefined,
@@ -43,6 +64,8 @@ function setCanvasSize() {
 
 
     elementSize = (canvasSize / 10) -1
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
 
     startGame()
 }
@@ -164,9 +187,11 @@ function showTime() {
     // muestra el temporizador con el tiempo actual.
     const playerTime = Date.now() - timeStart;
     timeIndicator.textContent = playerTime;
+    timeIndicator2.textContent = playerTime;
 }
 function showRecord() {
     recordIndicator.textContent = localStorage.getItem('record_time');
+    recordIndicator2.textContent = localStorage.getItem('record_time');
 }
 
 function gameOver() {
@@ -186,13 +211,17 @@ function gameWin() {
         if(recordTime >= recordPlayer) {
             localStorage.setItem('record_time', recordPlayer);
             pResult.textContent = 'GENIAL !!! Has superado el record!!!';
+            pResult2.textContent = 'GENIAL !!! Has superado el record!!!';
         } else{
             pResult.textContent = 'FALLASTE !!! No has superado el record';
+            pResult2.textContent = 'FALLASTE !!! No has superado el record';
         } 
     } else{
         pResult.textContent = 'Primera vez que superaste el juego. ¿Podras superar tu record?'
+        pResult2.textContent = 'Primera vez que superaste el juego. ¿Podras superar tu record?'
         localStorage.setItem('record_time', recordPlayer)
     }
+    end.classList.remove('inactive')
 }
 // Movimientos con teclado y botones 
 window.addEventListener('keydown', moveKey)

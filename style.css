@@ -5,6 +5,33 @@ body {
     margin: 0;
     padding: 0;
 }
+body .intro {
+    width: 100%;
+    height: 79%;
+    position: absolute;
+    color:#fdef05;
+    background-color: indigo;
+    text-align: center;
+    padding-top: 20%;
+}
+.intro h1 {
+    margin-bottom: 5%;
+}
+.intro p{
+    font-weight: bold;
+}
+.intro .start{
+    text-align: center;
+    background-color: #fdef05;
+    border-radius: 8px;
+    border-color: #ff6600;
+    padding: 5px;
+    width: 100px;
+}
+
+.inactive {
+    display: none;
+}
 
 .game-container {
     display: flex;
@@ -56,6 +83,29 @@ body {
     margin: 0;
     width: 100%;
 }
+
+body .end {
+    width: 100%;
+    height: 80%;
+    position: absolute;
+    top: 0;
+    color:#fdef05;
+    background-color: indigo;
+    text-align: center;
+    padding-top: 25%;
+}
+.end .trophy {
+    font-size: 5rem;
+}
+.end .restart{
+    text-align: center;
+    background-color: #fdef05;
+    border-radius: 8px;
+    border-color: #ff6600;
+    padding: 5px;
+    width: 100px;
+}
+
 
 @media (max-width: 440px) {
     .controls button {

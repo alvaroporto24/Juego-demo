@@ -7,6 +7,11 @@
     <title>Demo Juego</title>
 </head>
 <body>
+    <div class="intro">
+        <h1>Demo de Juego V.1</h1>
+        <p>Intenta terminar los tres nieveles en tiempo record</p><br>
+        <button class="start">Comenzar</button>
+    </div>
 
     <div class="game-container">
         <canvas id="game"></canvas>
@@ -20,11 +25,19 @@
 
         <div class="messages">
             <p>Vidas: <span class="livesIndicator"></span></p>
-            <p>Tiempo: <span class="timeIndicator"></span></p>
-            <p>Record: <span class="recordIndicator"></span></p>
+            <p>⏳Tiempo: <span class="timeIndicator"></span></p>
+            <p>🏁Record: <span class="recordIndicator"></span></p>
             <p id="result"></p>
-
         </div>
+    </div>
+
+    <div class="end inactive">
+        <h2>Felicidades has terminado el juego</h2>
+        <p class="trophy">🏆 🏆 🏆</p>
+        <p>⏳Tu tiempo es: <span class="timeIndicator2"></span></p>
+        <p>🏁El record es: <span class="recordIndicator2"></span></p>
+        <p id="result2"></p>
+        <button class="restart">Intentar otra vez</button>
     </div>
 
     <script src="mapa.js"></script>
